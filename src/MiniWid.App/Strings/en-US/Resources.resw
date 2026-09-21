@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="AppTitle.Text" xml:space="preserve">
+    <value>Battery Status</value>
+  </data>
+  <data name="Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="Charging" xml:space="preserve">
+    <value>Charging</value>
+  </data>
+  <data name="Sleeping" xml:space="preserve">
+    <value>Sleep mode</value>
+  </data>
+  <data name="Disconnected" xml:space="preserve">
+    <value>Disconnected</value>
+  </data>
+  <data name="ThisPc" xml:space="preserve">
+    <value>This PC</value>
+  </data>
+  <data name="EmptyMessage" xml:space="preserve">
+    <value>No battery devices found. Windows only reports accessories that already show a charge in Settings.</value>
+  </data>
+  <data name="ThemeHeader" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="ThemeRog" xml:space="preserve">
+    <value>ASUS ROG</value>
+  </data>
+  <data name="ThemeRog20" xml:space="preserve">
+    <value>ROG 20th Anniversary</value>
+  </data>
+  <data name="ThemeCyberpunk" xml:space="preserve">
+    <value>Cyberpunk 2077</value>
+  </data>
+  <data name="ThemeWindowsDark" xml:space="preserve">
+    <value>Windows dark</value>
+  </data>
+  <data name="ThemeWindowsLight" xml:space="preserve">
+    <value>Windows light</value>
+  </data>
+  <data name="AlwaysOnTop" xml:space="preserve">
+    <value>Always on top</value>
+  </data>
+  <data name="ShowThisPc" xml:space="preserve">
+    <value>Show This PC</value>
+  </data>
+  <data name="StartWithWindows" xml:space="preserve">
+    <value>Start with Windows</value>
+  </data>
+  <data name="RefreshNow" xml:space="preserve">
+    <value>Refresh now</value>
+  </data>
+  <data name="PollHeader" xml:space="preserve">
+    <value>Refresh interval</value>
+  </data>
+  <data name="Poll15" xml:space="preserve">
+    <value>Every 15 seconds</value>
+  </data>
+  <data name="Poll30" xml:space="preserve">
+    <value>Every 30 seconds</value>
+  </data>
+  <data name="Poll60" xml:space="preserve">
+    <value>Every 60 seconds</value>
+  </data>
+  <data name="ShowWidget" xml:space="preserve">
+    <value>Show widget</value>
+  </data>
+  <data name="HideWidget" xml:space="preserve">
+    <value>Hide widget</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="TrayTooltip" xml:space="preserve">
+    <value>MiniWid — battery status</value>
+  </data>
+</root>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UserControl
+    x:Class="MiniWid.App.Controls.BatteryGlyph"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Width="26"
+    Height="12"
+    UseLayoutRounding="True">
+    <Grid>
+        <Border
+            x:Name="Nub"
+            Width="1.6"
+            Height="4.4"
+            Margin="0,0,0.4,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            CornerRadius="0,1,1,0" />
+
+        <Border
+            x:Name="Body"
+            Margin="0.5,0.5,2.4,0.5"
+            BorderThickness="1.1"
+            CornerRadius="2.6">
+            <Border
+                x:Name="Well"
+                Margin="1.35"
+                CornerRadius="1.45"
+                SizeChanged="OnWellSizeChanged">
+                <Border
+                    x:Name="FillBar"
+                    HorizontalAlignment="Left"
+                    CornerRadius="1.45">
+                    <Border
+                        Height="2.4"
+                        Margin="0.8,0.55,0.8,0"
+                        VerticalAlignment="Top"
+                        CornerRadius="1.2,1.2,0,0"
+                        Opacity="0.28">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                <GradientStop Color="#8CFFFFFF" Offset="0" />
+                                <GradientStop Color="#00FFFFFF" Offset="1" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                </Border>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>

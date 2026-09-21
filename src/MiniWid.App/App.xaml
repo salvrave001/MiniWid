@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Application
+    x:Class="MiniWid.App.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <FontFamily x:Key="RogTitleFont">ms-appx:///Assets/Fonts/RobotoCondensed.ttf#Roboto Condensed</FontFamily>
+            <FontFamily x:Key="MiniWidUiFont">ms-appx:///Assets/Fonts/RobotoCondensed.ttf#Roboto Condensed</FontFamily>
+            <FontFamily x:Key="CyberpunkHudFont">ms-appx:///Assets/Fonts/Rajdhani-SemiBold.ttf#Rajdhani</FontFamily>
+            <CornerRadius x:Key="MiniWidRowCornerRadius">0</CornerRadius>
+            <CornerRadius x:Key="MiniWidBatteryCornerRadius">0</CornerRadius>
+            <x:Double x:Key="MiniWidSlashOpacity">1</x:Double>
+            <x:Double x:Key="MiniWidRowEdgeOpacity">1</x:Double>
+
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="MiniWidCardBrush" Color="#FFF3F3F3" />
+                    <SolidColorBrush x:Key="MiniWidPrimaryBrush" Color="#FF1A1A1A" />
+                    <SolidColorBrush x:Key="MiniWidSecondaryBrush" Color="#FF5D5D5D" />
+                    <SolidColorBrush x:Key="MiniWidRowBrush" Color="#FFFFFFFF" />
+                    <SolidColorBrush x:Key="MiniWidRowBorderBrush" Color="#FFE5E5E5" />
+                    <SolidColorBrush x:Key="MiniWidHeaderIconBrush" Color="#FF005FB8" />
+                    <SolidColorBrush x:Key="MiniWidMenuBrush" Color="#FF1A1A1A" />
+                    <SolidColorBrush x:Key="MiniWidAccentBrush" Color="#FF005FB8" />
+                    <SolidColorBrush x:Key="MiniWidAccentStrongBrush" Color="#FF1A1A1A" />
+                    <SolidColorBrush x:Key="MiniWidRedBrush" Color="#FFC42B1C" />
+                    <SolidColorBrush x:Key="MiniWidBorderBrush" Color="#FFE5E5E5" />
+                    <SolidColorBrush x:Key="MiniWidSlashBrush" Color="#FFF3F3F3" />
+                    <SolidColorBrush x:Key="MiniWidRowEdgeBrush" Color="#FFFFFFFF" />
+                    <LinearGradientBrush x:Key="MiniWidPhotoGlowBrush" StartPoint="0.5,1" EndPoint="0.5,0">
+                        <GradientStop Color="#99005FB8" Offset="0" />
+                        <GradientStop Color="#33005FB8" Offset="0.35" />
+                        <GradientStop Color="#00005FB8" Offset="1" />
+                    </LinearGradientBrush>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="MiniWidCardBrush" Color="#FF101010" />
+                    <SolidColorBrush x:Key="MiniWidPrimaryBrush" Color="#FFF2F2F2" />
+                    <SolidColorBrush x:Key="MiniWidSecondaryBrush" Color="#FFB3B3B3" />
+                    <SolidColorBrush x:Key="MiniWidRowBrush" Color="#FF181818" />
+                    <SolidColorBrush x:Key="MiniWidRowBorderBrush" Color="#FF333333" />
+                    <SolidColorBrush x:Key="MiniWidHeaderIconBrush" Color="#FFE0BE62" />
+                    <SolidColorBrush x:Key="MiniWidMenuBrush" Color="#FFE0BE62" />
+                    <SolidColorBrush x:Key="MiniWidAccentBrush" Color="#FFE0BE62" />
+                    <SolidColorBrush x:Key="MiniWidAccentStrongBrush" Color="#FFEEBE38" />
+                    <SolidColorBrush x:Key="MiniWidRedBrush" Color="#FFFF1929" />
+                    <SolidColorBrush x:Key="MiniWidBorderBrush" Color="#FFAE934B" />
+                    <SolidColorBrush x:Key="MiniWidSlashBrush" Color="#FFE0BE62" />
+                    <SolidColorBrush x:Key="MiniWidRowEdgeBrush" Color="#FFEEBE38" />
+                    <LinearGradientBrush x:Key="MiniWidPhotoGlowBrush" StartPoint="0.5,1" EndPoint="0.5,0">
+                        <GradientStop Color="#D8E0BE62" Offset="0" />
+                        <GradientStop Color="#70E0BE62" Offset="0.32" />
+                        <GradientStop Color="#00E0BE62" Offset="1" />
+                    </LinearGradientBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

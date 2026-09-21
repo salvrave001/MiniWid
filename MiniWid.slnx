@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MiniWid.App/MiniWid.App.csproj" />
+    <Project Path="src/MiniWid.Core/MiniWid.Core.csproj" />
+  </Folder>
+</Solution>

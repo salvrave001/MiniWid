@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="AppTitle.Text" xml:space="preserve">
+    <value>Статус батареи</value>
+  </data>
+  <data name="Connected" xml:space="preserve">
+    <value>Подключено</value>
+  </data>
+  <data name="Charging" xml:space="preserve">
+    <value>Зарядка</value>
+  </data>
+  <data name="Sleeping" xml:space="preserve">
+    <value>Спящий режим</value>
+  </data>
+  <data name="Disconnected" xml:space="preserve">
+    <value>Отключено</value>
+  </data>
+  <data name="ThisPc" xml:space="preserve">
+    <value>Этот компьютер</value>
+  </data>
+  <data name="EmptyMessage" xml:space="preserve">
+    <value>Устройства с зарядом не найдены. Виджет показывает только то, что Windows уже знает в Параметрах.</value>
+  </data>
+  <data name="ThemeHeader" xml:space="preserve">
+    <value>Тема</value>
+  </data>
+  <data name="ThemeRog" xml:space="preserve">
+    <value>ASUS ROG</value>
+  </data>
+  <data name="ThemeRog20" xml:space="preserve">
+    <value>ROG 20th Anniversary</value>
+  </data>
+  <data name="ThemeCyberpunk" xml:space="preserve">
+    <value>Cyberpunk 2077</value>
+  </data>
+  <data name="ThemeWindowsDark" xml:space="preserve">
+    <value>Windows, тёмная</value>
+  </data>
+  <data name="ThemeWindowsLight" xml:space="preserve">
+    <value>Windows, светлая</value>
+  </data>
+  <data name="AlwaysOnTop" xml:space="preserve">
+    <value>Поверх окон</value>
+  </data>
+  <data name="ShowThisPc" xml:space="preserve">
+    <value>Показывать этот ПК</value>
+  </data>
+  <data name="StartWithWindows" xml:space="preserve">
+    <value>Запускать с Windows</value>
+  </data>
+  <data name="RefreshNow" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="PollHeader" xml:space="preserve">
+    <value>Интервал обновления</value>
+  </data>
+  <data name="Poll15" xml:space="preserve">
+    <value>Каждые 15 секунд</value>
+  </data>
+  <data name="Poll30" xml:space="preserve">
+    <value>Каждые 30 секунд</value>
+  </data>
+  <data name="Poll60" xml:space="preserve">
+    <value>Каждые 60 секунд</value>
+  </data>
+  <data name="ShowWidget" xml:space="preserve">
+    <value>Показать виджет</value>
+  </data>
+  <data name="HideWidget" xml:space="preserve">
+    <value>Скрыть виджет</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="TrayTooltip" xml:space="preserve">
+    <value>MiniWid — статус батареи</value>
+  </data>
+</root>
