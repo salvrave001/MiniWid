@@ -37,7 +37,7 @@ internal static class DeviceArt
 
         if (IsRogHeadphones(haystack, kind))
         {
-            return (1.22, -10);
+            return (1.04, 0);
         }
 
         if (IsManba(haystack))
