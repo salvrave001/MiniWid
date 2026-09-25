@@ -44,12 +44,11 @@ internal sealed class WidgetTheme
     public required string FillHealthy { get; init; }
     public required string FillWarn { get; init; }
     public required string FillLow { get; init; }
+    public string BarStyle { get; init; } = "slash";
 
-    public FontFamily Font => Id == Cyberpunk
-        ? (FontFamily)Application.Current.Resources["CyberpunkHudFont"]
-        : UseCondensedFont
-            ? (FontFamily)Application.Current.Resources["RogTitleFont"]
-            : new FontFamily("Segoe UI Variable");
+    public FontFamily Font => UseCondensedFont
+        ? (FontFamily)Application.Current.Resources["RogTitleFont"]
+        : new FontFamily("Segoe UI Variable");
 
     public static string Normalize(string? theme) => theme switch
     {
@@ -177,9 +176,9 @@ internal sealed class WidgetTheme
         BatteryCorner = 2,
         SlashOpacity = 0,
         RowEdgeOpacity = 0,
-        ContentMargin = new Thickness(10, 8, 14, 10),
-        HeaderExtra = 62,
-        RowHeight = 98,
+        ContentMargin = new Thickness(6),
+        HeaderExtra = 34,
+        RowHeight = 94,
         Card = "#202020",
         Primary = "#FFFFFF",
         Secondary = "#9A9A9A",
@@ -193,7 +192,8 @@ internal sealed class WidgetTheme
         RowEdge = "#2C2C2C",
         FillHealthy = "#6CCB5F",
         FillWarn = "#FCE100",
-        FillLow = "#FF99A4"
+        FillLow = "#FF99A4",
+        BarStyle = "pill"
     };
 
     private static WidgetTheme FluentLight() => new()
@@ -212,9 +212,9 @@ internal sealed class WidgetTheme
         BatteryCorner = 2,
         SlashOpacity = 0,
         RowEdgeOpacity = 0,
-        ContentMargin = new Thickness(10, 8, 14, 10),
-        HeaderExtra = 62,
-        RowHeight = 98,
+        ContentMargin = new Thickness(8, 2, 12, 6),
+        HeaderExtra = 34,
+        RowHeight = 94,
         Card = "#F3F3F3",
         Primary = "#1A1A1A",
         Secondary = "#5D5D5D",
@@ -228,7 +228,8 @@ internal sealed class WidgetTheme
         RowEdge = "#FFFFFF",
         FillHealthy = "#0F7B0F",
         FillWarn = "#9D5D00",
-        FillLow = "#C42B1C"
+        FillLow = "#C42B1C",
+        BarStyle = "pill"
     };
 
     private static WidgetTheme NightCity() => new()
@@ -238,31 +239,32 @@ internal sealed class WidgetTheme
         ShowSlashes = false,
         ShowEdition20 = false,
         ShowBrandMark = false,
-        HeaderBadge = "2077",
-        TitleAllCaps = true,
-        UseCondensedFont = true,
-        TitleSpacing = 90,
+        HeaderBadge = "",
+        TitleAllCaps = false,
+        UseCondensedFont = false,
+        TitleSpacing = 0,
         TitleSize = 15,
-        RowCorner = 0,
-        BatteryCorner = 0,
+        RowCorner = 10,
+        BatteryCorner = 1,
         SlashOpacity = 0,
-        RowEdgeOpacity = 1,
-        ContentMargin = new Thickness(10, 20, 10, 18),
-        HeaderExtra = 96,
-        RowHeight = 104,
-        Card = "#10080A",
-        Primary = "#E85D52",
-        Secondary = "#9A4A44",
-        Row = "#160C0E",
-        RowBorder = "#5A2A28",
-        Accent = "#3DEFE3",
-        AccentStrong = "#6FFFF6",
-        Menu = "#3DEFE3",
-        Border = "#C45A4C",
-        Slash = "#E85D52",
-        RowEdge = "#E85D52",
-        FillHealthy = "#3DEFE3",
-        FillWarn = "#F0A040",
-        FillLow = "#E85D52"
+        RowEdgeOpacity = 0,
+        ContentMargin = new Thickness(8, 2, 12, 6),
+        HeaderExtra = 34,
+        RowHeight = 94,
+        Card = "#A6000000",
+        Primary = "#FFFFFF",
+        Secondary = "#8E8E8E",
+        Row = "#A6000000",
+        RowBorder = "#3A3A3A",
+        Accent = "#FFFFFF",
+        AccentStrong = "#FFFFFF",
+        Menu = "#FFFFFF",
+        Border = "#2A2A2A",
+        Slash = "#070707",
+        RowEdge = "#101010",
+        FillHealthy = "#FFFFFF",
+        FillWarn = "#BDBDBD",
+        FillLow = "#FF5C5C",
+        BarStyle = "segments"
     };
 }

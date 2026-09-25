@@ -24,6 +24,18 @@
   <data name="ThemeHeader" xml:space="preserve">
     <value>Theme</value>
   </data>
+  <data name="SizeHeader" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="SizeStandard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="SizeMini" xml:space="preserve">
+    <value>Mini</value>
+  </data>
+  <data name="SizeNano" xml:space="preserve">
+    <value>Nano</value>
+  </data>
   <data name="ThemeRog" xml:space="preserve">
     <value>ASUS ROG</value>
   </data>
@@ -31,7 +43,7 @@
     <value>ROG 20th Anniversary</value>
   </data>
   <data name="ThemeCyberpunk" xml:space="preserve">
-    <value>Cyberpunk 2077</value>
+    <value>HUD</value>
   </data>
   <data name="ThemeWindowsDark" xml:space="preserve">
     <value>Windows dark</value>

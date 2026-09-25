@@ -12,8 +12,121 @@
 
     <Grid
         x:Name="Root"
-        Width="408"
+        HorizontalAlignment="Stretch"
         Background="{ThemeResource MiniWidCardBrush}">
+        <Grid.Resources>
+        <DataTemplate x:Key="MiniRowTemplate" x:DataType="vm:DeviceRowViewModel">
+            <Border
+                HorizontalAlignment="Stretch"
+                Margin="0,0,0,4"
+                Background="{ThemeResource MiniWidRowBrush}"
+                BorderBrush="{ThemeResource MiniWidRowBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="{ThemeResource MiniWidRowCornerRadius}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Rectangle
+                        Fill="{ThemeResource MiniWidRowEdgeBrush}"
+                        Opacity="{ThemeResource MiniWidRowEdgeOpacity}" />
+                    <Grid Grid.Column="1" Padding="10,7,10,8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                FontFamily="{ThemeResource MiniWidUiFont}"
+                                FontSize="13"
+                                FontWeight="SemiBold"
+                                Foreground="{ThemeResource MiniWidPrimaryBrush}"
+                                MaxLines="1"
+                                Text="{x:Bind Name}"
+                                TextTrimming="CharacterEllipsis" />
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                FontFamily="{ThemeResource MiniWidUiFont}"
+                                FontSize="13"
+                                FontWeight="Bold"
+                                Foreground="{ThemeResource MiniWidAccentStrongBrush}"
+                                Text="{x:Bind PercentText}" />
+                        </Grid>
+                        <controls:LevelBar
+                            Grid.Row="1"
+                            Margin="0,6,0,0"
+                            HorizontalAlignment="Stretch"
+                            BarCorner="{ThemeResource MiniWidBarCornerRadius}"
+                            BarStyle="{ThemeResource MiniWidBarStyle}"
+                            Fill="{x:Bind FillBrush}"
+                            Percent="{x:Bind PercentValue}"
+                            TrackBrush="{ThemeResource MiniWidRowBorderBrush}" />
+                    </Grid>
+                    <Path
+                        Grid.ColumnSpan="2"
+                        Width="8"
+                        Height="8"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Data="M 8,0 L 8,8 L 0,0 Z"
+                        Fill="{ThemeResource MiniWidSlashBrush}"
+                        Opacity="{ThemeResource MiniWidSlashOpacity}"
+                        Stretch="Fill" />
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="NanoRowTemplate" x:DataType="vm:DeviceRowViewModel">
+            <Border
+                HorizontalAlignment="Stretch"
+                Margin="0,0,0,3"
+                Background="{ThemeResource MiniWidRowBrush}"
+                BorderBrush="{ThemeResource MiniWidRowBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="{ThemeResource MiniWidRowCornerRadius}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Rectangle
+                        Fill="{ThemeResource MiniWidRowEdgeBrush}"
+                        Opacity="{ThemeResource MiniWidRowEdgeOpacity}" />
+                    <Grid Grid.Column="1" Padding="6,2,12,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Margin="0,0,6,0"
+                            VerticalAlignment="Center"
+                            FontFamily="{ThemeResource MiniWidUiFont}"
+                            FontSize="12"
+                            FontWeight="SemiBold"
+                            Foreground="{ThemeResource MiniWidPrimaryBrush}"
+                            MaxLines="1"
+                            Text="{x:Bind Name}"
+                            TextTrimming="CharacterEllipsis" />
+                        <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            FontFamily="{ThemeResource MiniWidUiFont}"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Foreground="{ThemeResource MiniWidAccentStrongBrush}"
+                            Text="{x:Bind PercentText}" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        </Grid.Resources>
         <FlyoutBase.AttachedFlyout>
             <MenuFlyout x:Name="TrayMenu" ShouldConstrainToRootBounds="False">
                 <MenuFlyoutItem
@@ -284,7 +397,7 @@
                                     Click="Theme_Click"
                                     GroupName="Theme"
                                     Tag="Cyberpunk"
-                                    Text="Cyberpunk 2077" />
+                                    Text="HUD" />
                                 <RadioMenuFlyoutItem
                                     x:Name="ThemeWindowsDarkItem"
                                     Click="Theme_Click"
@@ -297,6 +410,26 @@
                                     GroupName="Theme"
                                     Tag="WindowsLight"
                                     Text="Windows light" />
+                            </MenuFlyoutSubItem>
+                            <MenuFlyoutSubItem x:Name="SizeMenu" Text="Size">
+                                <RadioMenuFlyoutItem
+                                    x:Name="SizeStandardItem"
+                                    Click="Size_Click"
+                                    GroupName="Size"
+                                    Tag="Standard"
+                                    Text="Standard" />
+                                <RadioMenuFlyoutItem
+                                    x:Name="SizeMiniItem"
+                                    Click="Size_Click"
+                                    GroupName="Size"
+                                    Tag="Mini"
+                                    Text="Mini" />
+                                <RadioMenuFlyoutItem
+                                    x:Name="SizeNanoItem"
+                                    Click="Size_Click"
+                                    GroupName="Size"
+                                    Tag="Nano"
+                                    Text="Nano" />
                             </MenuFlyoutSubItem>
                             <ToggleMenuFlyoutItem
                                 x:Name="AlwaysOnTopItem"
@@ -355,10 +488,26 @@
                 Opacity="0.35" />
 
             <Grid x:Name="ListHost" Grid.Row="1" Padding="14,10,26,20">
-                <ItemsControl x:Name="DeviceList">
+                <ItemsControl
+                    x:Name="DeviceList"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalAlignment="Top">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel HorizontalAlignment="Stretch" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="vm:DeviceRowViewModel">
                             <Border
+                                HorizontalAlignment="Stretch"
                                 Margin="0,0,0,8"
                                 Background="{ThemeResource MiniWidRowBrush}"
                                 BorderBrush="{ThemeResource MiniWidRowBorderBrush}"

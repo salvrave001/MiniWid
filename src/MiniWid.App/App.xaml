@@ -13,6 +13,8 @@
             <FontFamily x:Key="MiniWidUiFont">ms-appx:///Assets/Fonts/RobotoCondensed.ttf#Roboto Condensed</FontFamily>
             <FontFamily x:Key="CyberpunkHudFont">ms-appx:///Assets/Fonts/Rajdhani-SemiBold.ttf#Rajdhani</FontFamily>
             <CornerRadius x:Key="MiniWidRowCornerRadius">0</CornerRadius>
+            <CornerRadius x:Key="MiniWidBarCornerRadius">0</CornerRadius>
+            <x:String x:Key="MiniWidBarStyle">slash</x:String>
             <CornerRadius x:Key="MiniWidBatteryCornerRadius">0</CornerRadius>
             <x:Double x:Key="MiniWidSlashOpacity">1</x:Double>
             <x:Double x:Key="MiniWidRowEdgeOpacity">1</x:Double>

@@ -5,6 +5,7 @@ namespace MiniWid.App.Services;
 public sealed class AppSettings
 {
     public string Theme { get; set; } = "Rog20";
+    public string Size { get; set; } = "Standard";
     public bool AlwaysOnTop { get; set; }
     public int PollIntervalSeconds { get; set; } = 30;
     public bool ShowThisPc { get; set; } = true;

@@ -9,12 +9,12 @@ using MiniWid.App.ViewModels;
 using Windows.Graphics;
 using Windows.UI;
 using WinRT.Interop;
+using System.Runtime.InteropServices;
 
 namespace MiniWid.App;
 
 public sealed partial class MainWindow : Window
 {
-    private const int WindowWidth = 408;
     private const nuint SubclassId = 1;
 
     private readonly SettingsStore _settingsStore = new();
@@ -22,8 +22,10 @@ public sealed partial class MainWindow : Window
     private readonly Strings _resources = new();
     private readonly DispatcherTimer _timer = new();
 
+    private readonly DataTemplate _standardRowTemplate;
     private AppSettings _settings;
     private WidgetTheme _theme = WidgetTheme.From(WidgetTheme.Rog20);
+    private readonly DesktopAcrylicBackdrop _hudBackdrop = new();
     private TrayIconService? _tray;
     private WindowSubclass.SubclassProc? _subclassProc;
     private IntPtr _hwnd;
@@ -33,8 +35,10 @@ public sealed partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        _standardRowTemplate = DeviceList.ItemTemplate;
         _settings = _settingsStore.Load();
         _settings.Theme = WidgetTheme.Normalize(_settings.Theme);
+        _settings.Size = WidgetSize.Normalize(_settings.Size);
         _settings.StartWithWindows = StartupService.IsEnabled();
 
         DeviceList.ItemsSource = _viewModel.Devices;
@@ -81,9 +85,10 @@ public sealed partial class MainWindow : Window
             presenter.IsResizable = false;
             presenter.IsMaximizable = false;
             presenter.IsMinimizable = false;
-            presenter.SetBorderAndTitleBar(true, false);
+            presenter.SetBorderAndTitleBar(_theme.BarStyle != "segments", false);
         }
 
+        ApplyWindowBackdrop(_theme);
         ResizeToContent(_viewModel.Devices.Count);
     }
 
@@ -96,7 +101,7 @@ public sealed partial class MainWindow : Window
 
         if (x == int.MinValue || y == int.MinValue)
         {
-            x = work.X + work.Width - WindowWidth - 28;
+            x = work.X + work.Width - WidgetSize.Width(_settings.Size, _theme) - 28;
             y = work.Y + 28;
         }
 
@@ -151,7 +156,8 @@ public sealed partial class MainWindow : Window
         "MiniWidRowBorderBrush", "MiniWidHeaderIconBrush", "MiniWidMenuBrush", "MiniWidAccentBrush",
         "MiniWidAccentStrongBrush", "MiniWidBorderBrush", "MiniWidSlashBrush", "MiniWidRowEdgeBrush",
         "MiniWidUiFont", "MiniWidRowCornerRadius", "MiniWidBatteryCornerRadius",
-        "MiniWidSlashOpacity", "MiniWidRowEdgeOpacity", "MiniWidPhotoGlowBrush"
+        "MiniWidSlashOpacity", "MiniWidRowEdgeOpacity", "MiniWidPhotoGlowBrush",
+        "MiniWidBarCornerRadius", "MiniWidBarStyle"
     ];
 
     private static void FillSkin(ResourceDictionary dict, WidgetTheme theme)
@@ -173,6 +179,8 @@ public sealed partial class MainWindow : Window
         dict["MiniWidBatteryCornerRadius"] = new CornerRadius(theme.BatteryCorner);
         dict["MiniWidSlashOpacity"] = theme.SlashOpacity;
         dict["MiniWidRowEdgeOpacity"] = theme.RowEdgeOpacity;
+        dict["MiniWidBarCornerRadius"] = new CornerRadius(theme.RowCorner > 0 ? 6 : 0);
+        dict["MiniWidBarStyle"] = theme.BarStyle;
         SetPhotoGlow(dict, theme.Accent);
     }
 
@@ -224,7 +232,9 @@ public sealed partial class MainWindow : Window
         var border = BrushFrom(theme.ElementTheme, "MiniWidBorderBrush");
         var slash = BrushFrom(theme.ElementTheme, "MiniWidSlashBrush");
 
+        CardFrame.BorderThickness = theme.BarStyle == "segments" ? new Thickness(0) : new Thickness(1);
         Root.Background = card;
+        ApplyWindowBackdrop(theme);
         CardFrame.BorderBrush = border;
         TopSlash.Fill = slash;
         BottomSlash.Fill = slash;
@@ -246,7 +256,7 @@ public sealed partial class MainWindow : Window
         CyberBadge.FontFamily = theme.Font;
         CyberBadge.Foreground = secondary;
 
-        var cyber = theme.Id == WidgetTheme.Cyberpunk;
+        var cyber = false;
         var slashVis = theme.ShowSlashes ? Visibility.Visible : Visibility.Collapsed;
         TopSlash.Visibility = slashVis;
         BottomSlash.Visibility = slashVis;
@@ -269,19 +279,145 @@ public sealed partial class MainWindow : Window
 
         InnerShell.Margin = theme.ContentMargin;
         ListHost.Padding = cyber
-            ? new Thickness(16, 6, 16, 14)
+            ? new Thickness(12, 0, 12, 8)
             : theme.ShowSlashes
                 ? new Thickness(14, 10, 26, 20)
-                : new Thickness(4, 4, 10, 10);
+                : new Thickness(4, 0, 8, 6);
         HeaderBar.Padding = cyber
-            ? new Thickness(16, 12, 10, 8)
+            ? new Thickness(12, 2, 8, 0)
             : theme.ShowSlashes
                 ? new Thickness(16, 10, 10, 10)
-                : new Thickness(4, 8, 4, 8);
+                : new Thickness(8, 0, 4, 0);
         MoreButton.CornerRadius = new CornerRadius(theme.RowCorner > 0 ? 4 : 0);
 
         var title = _resources["AppTitle/Text"];
         TitleText.Text = theme.TitleAllCaps ? title.ToUpperInvariant() : title;
+        ApplySizeChrome(theme);
+    }
+
+    private void ApplyWindowBackdrop(WidgetTheme theme)
+    {
+        var hud = theme.BarStyle == "segments";
+        SystemBackdrop = hud ? _hudBackdrop : null;
+        if (AppWindow.Presenter is OverlappedPresenter presenter)
+        {
+            presenter.SetBorderAndTitleBar(!hud, false);
+        }
+
+        var hwnd = WindowNative.GetWindowHandle(this);
+        var windowStyle = GetWindowLongPtr(hwnd, -16).ToInt64();
+        const long frameStyles = 0x00C40000;
+        windowStyle = hud
+            ? windowStyle & ~frameStyles
+            : windowStyle | frameStyles;
+        SetWindowLongPtr(hwnd, -16, new IntPtr(windowStyle));
+
+        var extendedStyle = GetWindowLongPtr(hwnd, -20).ToInt64();
+        SetWindowLongPtr(hwnd, -20, new IntPtr(extendedStyle | 0x00080000));
+        SetLayeredWindowAttributes(hwnd, 0, hud ? (byte)166 : byte.MaxValue, 0x00000002);
+        var border = hud ? unchecked((int)0xFFFFFFFE) : unchecked((int)0xFFFFFFFF);
+        DwmSetWindowAttribute(hwnd, 34, ref border, sizeof(int));
+        SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, 0x0037);
+    }
+
+    [DllImport("dwmapi.dll")]
+    private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int value, int size);
+
+    [DllImport("user32.dll", EntryPoint = "GetWindowLongPtrW")]
+    private static extern IntPtr GetWindowLongPtr(IntPtr hwnd, int index);
+
+    [DllImport("user32.dll", EntryPoint = "SetWindowLongPtrW")]
+    private static extern IntPtr SetWindowLongPtr(IntPtr hwnd, int index, IntPtr value);
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool SetLayeredWindowAttributes(
+        IntPtr hwnd,
+        uint colorKey,
+        byte alpha,
+        uint flags);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool SetWindowPos(
+        IntPtr hwnd,
+        IntPtr insertAfter,
+        int x,
+        int y,
+        int width,
+        int height,
+        uint flags);
+
+    private void ApplySizeChrome(WidgetTheme theme)
+    {
+        var size = WidgetSize.Normalize(_settings.Size);
+        var cyber = false;
+        DeviceList.ItemTemplate = size switch
+        {
+            WidgetSize.Mini => (DataTemplate)Root.Resources["MiniRowTemplate"],
+            WidgetSize.Nano => (DataTemplate)Root.Resources["NanoRowTemplate"],
+            _ => _standardRowTemplate
+        };
+
+        if (size == WidgetSize.Standard)
+        {
+            Rog20Logo.Width = 118;
+            Rog20Logo.Height = 38;
+            HeaderBar.Height = double.NaN;
+            ListHost.Margin = new Thickness(0);
+            MoreButton.Width = theme.ShowSlashes ? 32 : 24;
+            MoreButton.Height = theme.ShowSlashes ? 28 : 20;
+            EmptyText.MaxWidth = 280;
+            EmptyText.FontSize = 12;
+            return;
+        }
+
+        if (size == WidgetSize.Mini)
+        {
+            Rog20Logo.Width = 84;
+            Rog20Logo.Height = 27;
+            var rog = theme.ShowSlashes;
+            var hud = theme.BarStyle == "segments";
+            InnerShell.Margin = rog
+                ? new Thickness(1, 6, 14, 6)
+                : new Thickness(6);
+            ListHost.Padding = rog
+                ? new Thickness(8, 4, 18, 8)
+                : hud
+                    ? new Thickness(4, 8, 4, 6)
+                    : new Thickness(4, 0, 4, 6);
+            ListHost.Margin = hud
+                ? new Thickness(0, -12, 0, 0)
+                : new Thickness(0);
+            HeaderBar.Padding = rog
+                ? new Thickness(10, 4, 12, 4)
+                : new Thickness(8, 0, 6, 0);
+            HeaderBar.Height = hud ? 18 : double.NaN;
+            MoreButton.Width = rog ? 32 : 24;
+            MoreButton.Height = rog ? 28 : 20;
+            EmptyText.MaxWidth = 240;
+            EmptyText.FontSize = 11;
+            return;
+        }
+
+        Rog20Logo.Visibility = Visibility.Collapsed;
+        BrandMark.Visibility = Visibility.Collapsed;
+        EditionMark.Visibility = Visibility.Collapsed;
+        TitleText.Visibility = Visibility.Collapsed;
+        CyberBadge.Visibility = Visibility.Collapsed;
+        CyberIndexBox.Visibility = Visibility.Collapsed;
+        InnerShell.Margin = cyber
+            ? new Thickness(6, 2, 10, 4)
+            : new Thickness(2, 0, 4, 2);
+        ListHost.Padding = new Thickness(2, 0, 4, 4);
+        HeaderBar.Padding = new Thickness(8, 0, 8, 0);
+        HeaderBar.Height = double.NaN;
+        ListHost.Margin = new Thickness(0);
+        MoreButton.Width = 24;
+        MoreButton.Height = 20;
+        HeaderRule.Visibility = cyber ? Visibility.Collapsed : Visibility.Visible;
+        EmptyText.MaxWidth = 170;
+        EmptyText.FontSize = 11;
     }
 
     private void EnsureRog20Logo()
@@ -363,8 +499,14 @@ public sealed partial class MainWindow : Window
 
     private void ResizeToContent(int count)
     {
-        var height = _theme.WindowHeight(count, _viewModel.IsEmpty);
-        AppWindow.Resize(new SizeInt32(WindowWidth, height));
+        var width = WidgetSize.Width(_settings.Size, _theme);
+        var height = WidgetSize.WindowHeight(_settings.Size, _theme, count, _viewModel.IsEmpty);
+        Root.Width = double.NaN;
+        Root.HorizontalAlignment = HorizontalAlignment.Stretch;
+        var scale = Root.XamlRoot?.RasterizationScale ?? 1;
+        AppWindow.Resize(new SizeInt32(
+            (int)Math.Ceiling(width * scale),
+            (int)Math.Ceiling(height * scale)));
     }
 
     private void LocalizeMenus()
@@ -372,6 +514,10 @@ public sealed partial class MainWindow : Window
         var title = _resources["AppTitle/Text"];
         TitleText.Text = _theme.TitleAllCaps ? title.ToUpperInvariant() : title;
         ThemeMenu.Text = _resources["ThemeHeader"];
+        SizeMenu.Text = _resources["SizeHeader"];
+        SizeStandardItem.Text = _resources["SizeStandard"];
+        SizeMiniItem.Text = _resources["SizeMini"];
+        SizeNanoItem.Text = _resources["SizeNano"];
         ThemeRogItem.Text = _resources["ThemeRog"];
         ThemeRog20Item.Text = _resources["ThemeRog20"];
         ThemeCyberpunkItem.Text = _resources["ThemeCyberpunk"];
@@ -398,6 +544,9 @@ public sealed partial class MainWindow : Window
         ThemeCyberpunkItem.IsChecked = _settings.Theme == WidgetTheme.Cyberpunk;
         ThemeWindowsDarkItem.IsChecked = _settings.Theme == WidgetTheme.WindowsDark;
         ThemeWindowsLightItem.IsChecked = _settings.Theme == WidgetTheme.WindowsLight;
+        SizeStandardItem.IsChecked = _settings.Size == WidgetSize.Standard;
+        SizeMiniItem.IsChecked = _settings.Size == WidgetSize.Mini;
+        SizeNanoItem.IsChecked = _settings.Size == WidgetSize.Nano;
         AlwaysOnTopItem.IsChecked = _settings.AlwaysOnTop;
         ShowThisPcItem.IsChecked = _settings.ShowThisPc;
         StartWithWindowsItem.IsChecked = _settings.StartWithWindows;
@@ -414,6 +563,16 @@ public sealed partial class MainWindow : Window
             _settingsStore.Save(_settings);
             ApplyTheme();
             await RefreshDevicesAsync();
+        }
+    }
+
+    private void Size_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is RadioMenuFlyoutItem item && item.Tag is string size)
+        {
+            _settings.Size = WidgetSize.Normalize(size);
+            _settingsStore.Save(_settings);
+            ApplyTheme();
         }
     }
 

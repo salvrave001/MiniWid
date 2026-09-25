@@ -7,7 +7,8 @@
 ## Что умеет
 
 - Карточка без рамки поверх окон, трей, автозапуск
-- Темы: ASUS ROG, ROG 20th Anniversary, Cyberpunk 2077, Windows светлая/тёмная
+- Темы: ASUS ROG, ROG 20th Anniversary, HUD, Windows светлая/тёмная
+- Размеры: стандартный, мини (название и полоса заряда), нано (название и процент)
 - Реальный заряд ASUS ROG Delta II и WLMouse Beast X с USB-донгла
 - Sony WH-1000XM4 по Bluetooth, если Windows видит процент
 - Manba One V2 в списке; в режиме Xbox 360 Windows не отдаёт настоящий заряд (показывает «—», а не фейковые 100%)
